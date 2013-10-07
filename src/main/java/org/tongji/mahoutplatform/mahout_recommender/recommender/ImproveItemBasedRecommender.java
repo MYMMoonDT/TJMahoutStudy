@@ -26,10 +26,7 @@ public class ImproveItemBasedRecommender extends GenericItemBasedRecommender{
 			DataModel dataModel,
 			ItemSimilarity similarity,
 			double similarityThreshold){
-		this(dataModel, 
-			similarity,
-			AbstractRecommender.getDefaultCandidateItemsStrategy(),
-	        getDefaultMostSimilarItemsCandidateItemsStrategy());
+		this(dataModel, similarity);
 		this.itemSimilarityThreshold = similarityThreshold;
 		this.useSimilarityThreshold = true;
 	}
