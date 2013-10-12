@@ -19,8 +19,8 @@ public class ImproveItemBasedRecommender extends GenericItemBasedRecommender{
 	private RefreshHelper refreshHelper;
 	private EstimatedPreferenceCapper capper;
 	
-	private boolean useSimilarityThreshold = false;
-	private double itemSimilarityThreshold;
+	//private boolean useSimilarityThreshold = false;
+	private double itemSimilarityThreshold = Double.NaN;
 	
 	public ImproveItemBasedRecommender(
 			DataModel dataModel,
@@ -28,7 +28,6 @@ public class ImproveItemBasedRecommender extends GenericItemBasedRecommender{
 			double similarityThreshold){
 		this(dataModel, similarity);
 		this.itemSimilarityThreshold = similarityThreshold;
-		this.useSimilarityThreshold = true;
 	}
 	
 	public ImproveItemBasedRecommender(
@@ -98,7 +97,7 @@ public class ImproveItemBasedRecommender extends GenericItemBasedRecommender{
 		for(int i = 0; i < similarities.length; i++){
 			double theSimilarity = similarities[i];
 			if(!Double.isNaN(theSimilarity)){
-				if(useSimilarityThreshold){
+				if(!Double.isNaN(itemSimilarityThreshold)){
 					if(theSimilarity > itemSimilarityThreshold){
 						preference += theSimilarity * (preferencesFromUser.getValue(i) - itemAveragePref);
 						totalSimilarity += theSimilarity;

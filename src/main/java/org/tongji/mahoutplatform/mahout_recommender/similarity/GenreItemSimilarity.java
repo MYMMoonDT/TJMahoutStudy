@@ -16,6 +16,7 @@ import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.apache.mahout.cf.taste.transforms.PreferenceTransform;
 import org.apache.mahout.cf.taste.transforms.SimilarityTransform;
+import org.tongji.mahoutplatform.mahout_recommender.data.Genre;
 
 import com.google.common.base.Preconditions;
 
@@ -32,14 +33,11 @@ public class GenreItemSimilarity implements UserSimilarity, ItemSimilarity{
 	private DataModel dataModel;
 	private RefreshHelper refreshHelper;
 	
-	private boolean useItemEta = false;
-	private int itemEta;
 	
 	private final double Lambda = 0.8; 
-	private boolean useGenreDataModel = false;
-	private DataModel genreDataModel;
-	
-	private static final int GenreNum = 19;
+	private int itemEta = 0;
+	private DataModel genreDataModel = null;
+	private int GenreNum = Genre.getGenreNum();
 	
 	public GenreItemSimilarity(DataModel dataModel) throws TasteException {
 		this(dataModel, Weighting.UNWEIGHTED);
@@ -50,9 +48,7 @@ public class GenreItemSimilarity implements UserSimilarity, ItemSimilarity{
 			DataModel genreDataModel,
 			int itemEta) throws TasteException{
 		this(dataModel);
-		this.useGenreDataModel = true;
 		this.genreDataModel = genreDataModel;
-		this.useItemEta = true;
 		this.itemEta = itemEta;
 	}
 	
@@ -60,13 +56,11 @@ public class GenreItemSimilarity implements UserSimilarity, ItemSimilarity{
 			DataModel dataModel,
 			DataModel genreDataModel) throws TasteException{
 		this(dataModel);
-		this.useGenreDataModel = true;
 		this.genreDataModel = genreDataModel;
 	}
 	
 	public GenreItemSimilarity(DataModel dataModel, int itemEta) throws TasteException {
 		this(dataModel);
-		this.useItemEta = true;
 		this.itemEta = itemEta;
 	}
 	
@@ -380,7 +374,7 @@ public class GenreItemSimilarity implements UserSimilarity, ItemSimilarity{
 			result = normalizeWeightResult(result, count, cachedNumUsers);
 		}
 		
-		if(useGenreDataModel){
+		if(genreDataModel != null){
 			int bothInItem1AndItem2 = 0;
 			int inItem1OrItem2 = 0;
 			PreferenceArray prefs1 = genreDataModel.getPreferencesFromUser(itemID1);
@@ -405,7 +399,7 @@ public class GenreItemSimilarity implements UserSimilarity, ItemSimilarity{
 			result = result * Lambda + (1 - Lambda) * genreResult;
 		}
 		
-		if(useItemEta){
+		if(itemEta != 0){
 			result *= ((double)Math.min(count, itemEta)) / (double)itemEta;
 		}
 		

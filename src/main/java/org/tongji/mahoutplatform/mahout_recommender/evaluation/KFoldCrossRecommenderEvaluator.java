@@ -121,8 +121,9 @@ public class KFoldCrossRecommenderEvaluator implements RecommenderEvaluator {
     log.info("Beginning evaluation using {} of {}", trainingPercentage, dataModel);
     
     double result = 0;
+    
     for(int i = 1; i <= kFold; i++){
-	    int numUsers = dataModel.getNumUsers();
+	    /*int numUsers = dataModel.getNumUsers();
 	    FastByIDMap<PreferenceArray> trainingPrefs = new FastByIDMap<PreferenceArray>(
 	        1 + (int) (evaluationPercentage * numUsers));
 	    FastByIDMap<PreferenceArray> testPrefs = new FastByIDMap<PreferenceArray>(
@@ -142,7 +143,9 @@ public class KFoldCrossRecommenderEvaluator implements RecommenderEvaluator {
 	    Recommender recommender = recommenderBuilder.buildRecommender(trainingModel);
 	    
 	    result += getEvaluation(testPrefs, recommender);
-	    log.info("Evaluation result: {}", result);
+	    log.info("Evaluation result: {}", result);*/
+    	
+    	
     }
     return result / kFold;
   }
