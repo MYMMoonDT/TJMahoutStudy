@@ -16,7 +16,6 @@ import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.apache.mahout.cf.taste.transforms.PreferenceTransform;
 import org.apache.mahout.cf.taste.transforms.SimilarityTransform;
-import org.tongji.mahoutplatform.mahout_recommender.data.GenreDataModel;
 
 import com.google.common.base.Preconditions;
 
@@ -200,10 +199,8 @@ public class GenreItemSimilarity implements UserSimilarity, ItemSimilarity{
 				if (xIndex == yIndex) {
 					// Both users expressed a preference for the item
 					if (hasPrefTransform) {
-						x = prefTransform.getTransformedValue(xPrefs
-								.get(xPrefIndex));
-						y = prefTransform.getTransformedValue(yPrefs
-								.get(yPrefIndex));
+						x = prefTransform.getTransformedValue(xPrefs.get(xPrefIndex));
+						y = prefTransform.getTransformedValue(yPrefs.get(yPrefIndex));
 					} else {
 						x = xPrefs.getValue(xPrefIndex);
 						y = yPrefs.getValue(yPrefIndex);
@@ -214,16 +211,14 @@ public class GenreItemSimilarity implements UserSimilarity, ItemSimilarity{
 					// as if the other user expressed that preference
 					if (compare < 0) {
 						// X has a value; infer Y's
-						x = hasPrefTransform ? prefTransform
-								.getTransformedValue(xPrefs.get(xPrefIndex))
+						x = hasPrefTransform ? prefTransform.getTransformedValue(xPrefs.get(xPrefIndex))
 								: xPrefs.getValue(xPrefIndex);
 						y = inferrer.inferPreference(userID2, xIndex);
 					} else {
 						// compare > 0
 						// Y has a value; infer X's
 						x = inferrer.inferPreference(userID1, yIndex);
-						y = hasPrefTransform ? prefTransform
-								.getTransformedValue(yPrefs.get(yPrefIndex))
+						y = hasPrefTransform ? prefTransform.getTransformedValue(yPrefs.get(yPrefIndex))
 								: yPrefs.getValue(yPrefIndex);
 					}
 				}
@@ -291,8 +286,7 @@ public class GenreItemSimilarity implements UserSimilarity, ItemSimilarity{
 		}
 
 		if (similarityTransform != null) {
-			result = similarityTransform.transformSimilarity(userID1, userID2,
-					result);
+			result = similarityTransform.transformSimilarity(userID1, userID2, result);
 		}
 
 		if (!Double.isNaN(result)) {
@@ -379,8 +373,7 @@ public class GenreItemSimilarity implements UserSimilarity, ItemSimilarity{
 		}
 
 		if (similarityTransform != null) {
-			result = similarityTransform.transformSimilarity(itemID1, itemID2,
-					result);
+			result = similarityTransform.transformSimilarity(itemID1, itemID2, result);
 		}
 
 		if (!Double.isNaN(result)) {

@@ -23,7 +23,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.locks.ReentrantLock;
@@ -48,7 +47,6 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
-import com.google.common.io.Closeables;
 
 /**
  * <p>
@@ -124,7 +122,6 @@ private static final Logger log = LoggerFactory.getLogger(GenreDataModel.class);
   public static final long DEFAULT_MIN_RELOAD_INTERVAL_MS = 60 * 1000L; // 1 minute?
   private static final char COMMENT_CHAR = '#';
   private static final char[] DELIMIETERS = {',', '\t'};
-  private static final int GenreNum = 19;
 
   private final File dataFile;
   private long lastModified;
@@ -553,7 +550,7 @@ private static final Logger log = LoggerFactory.getLogger(GenreDataModel.class);
     tokens.next();
     String itemUrlString = tokens.next();
     long itemID = readItemIDFromString(itemIDString);
-    for(int i = 0; i < GenreNum; i++){
+    for(int i = 0; i < Genre.getGenreNum(); i++){
     	String itemGenre = tokens.next();
     	if(itemGenre.equals("1")){
     		FastIDSet genreIDs = data.get(itemID);

@@ -19,5 +19,9 @@ public enum Genre {
 	SCI_FI,
 	THRILLER,
 	WAR,
-	WESTERN
+	WESTERN;
+	private final static int GENRE_NUM = 19;
+	public static int getGenreNum(){
+		return GENRE_NUM;
+	}
 }

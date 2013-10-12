@@ -15,6 +15,9 @@ import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 import org.apache.mahout.common.RandomUtils;
 import org.tongji.mahoutplatform.mahout_recommender.data.GenreDataModel;
+import org.tongji.mahoutplatform.mahout_recommender.evaluation.KFoldCrossRecommenderEvaluator;
+import org.tongji.mahoutplatform.mahout_recommender.evaluation.KFoldCrossRecommenderEvaluator.EvalType;
+import org.tongji.mahoutplatform.mahout_recommender.recommender.ImproveItemBasedRecommender;
 import org.tongji.mahoutplatform.mahout_recommender.similarity.GenreItemSimilarity;
 
 public class GenreDataModelSample {
@@ -25,30 +28,17 @@ public class GenreDataModelSample {
 		DataModel model = new FileDataModel(new File("data/ratings.dat"));
 		final DataModel genreModel = new GenreDataModel(new File("data/movies.dat"));
 		
+		//KFoldCrossRecommenderEvaluator evaluator = new KFoldCrossRecommenderEvaluator();
 		RecommenderEvaluator evaluator = new AverageAbsoluteDifferenceRecommenderEvaluator();
 		
 		RecommenderBuilder builder = new RecommenderBuilder(){
 			public Recommender buildRecommender(DataModel model) throws TasteException {
-				ItemSimilarity similarity = new PearsonCorrelationSimilarity(model);
-				return new GenericItemBasedRecommender(model, similarity);
+				ItemSimilarity similarity = new GenreItemSimilarity(model,genreModel,80);
+				return new ImproveItemBasedRecommender(model, similarity, 0.1);
 			}
 		};
 		double score = evaluator.evaluate(builder, null, model, 0.9, 1.0);
-		System.out.println("----------random 0.9 training percentage result using AAD----------");
 		System.out.println(score);
-		System.out.println("-------------------------------------------------------------------");
-	
-		RecommenderBuilder builder2 = new RecommenderBuilder(){
-			public Recommender buildRecommender(DataModel model) throws TasteException {
-				ItemSimilarity similarity = new GenreItemSimilarity(model, genreModel, 80);
-				return new GenericItemBasedRecommender(model, similarity);
-			}
-		};
-		score = evaluator.evaluate(builder2, null, model, 0.9, 1.0);
-		System.out.println("----------random 0.9 training percentage result using AAD----------");
-		System.out.println(score);
-		System.out.println("-------------------------------------------------------------------");
-	
 	}
 
 }
