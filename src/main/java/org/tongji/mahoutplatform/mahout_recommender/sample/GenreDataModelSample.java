@@ -8,7 +8,6 @@ import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
-import org.apache.mahout.common.RandomUtils;
 import org.tongji.mahoutplatform.mahout_recommender.data.GenreDataModel;
 import org.tongji.mahoutplatform.mahout_recommender.data.ImproveFileDataModel;
 import org.tongji.mahoutplatform.mahout_recommender.evaluation.KFoldCrossRecommenderEvaluator;

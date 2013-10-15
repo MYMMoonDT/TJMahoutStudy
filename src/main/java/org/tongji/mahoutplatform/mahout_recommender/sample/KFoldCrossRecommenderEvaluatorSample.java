@@ -5,19 +5,19 @@ import java.io.IOException;
 
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
-import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
 import org.apache.mahout.cf.taste.impl.recommender.GenericItemBasedRecommender;
 import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
+import org.tongji.mahoutplatform.mahout_recommender.data.ImproveFileDataModel;
 import org.tongji.mahoutplatform.mahout_recommender.evaluation.KFoldCrossRecommenderEvaluator;
 import org.tongji.mahoutplatform.mahout_recommender.evaluation.KFoldCrossRecommenderEvaluator.EvalType;
 import org.tongji.mahoutplatform.mahout_recommender.recommender.ImproveItemBasedRecommender;
 
 public class KFoldCrossRecommenderEvaluatorSample {
 	public static void main(String[] args) throws IOException, TasteException{
-		DataModel model = new FileDataModel(new File("data/ratings.dat"));
+		DataModel model = new ImproveFileDataModel(new File("data/ratings.dat"));
 		
 		KFoldCrossRecommenderEvaluator evaluator = new KFoldCrossRecommenderEvaluator();
 		

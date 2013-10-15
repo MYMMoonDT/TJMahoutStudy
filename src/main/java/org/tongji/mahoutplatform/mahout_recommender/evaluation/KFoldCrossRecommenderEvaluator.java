@@ -21,11 +21,9 @@ import org.apache.mahout.cf.taste.eval.RecommenderEvaluator;
 import org.apache.mahout.cf.taste.impl.common.FastByIDMap;
 import org.apache.mahout.cf.taste.impl.common.FullRunningAverage;
 import org.apache.mahout.cf.taste.impl.common.FullRunningAverageAndStdDev;
-import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.impl.common.RunningAverage;
 import org.apache.mahout.cf.taste.impl.common.RunningAverageAndStdDev;
 import org.apache.mahout.cf.taste.impl.model.GenericDataModel;
-import org.apache.mahout.cf.taste.impl.model.GenericPreference;
 import org.apache.mahout.cf.taste.impl.model.GenericUserPreferenceArray;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.Preference;
@@ -270,6 +268,7 @@ public class KFoldCrossRecommenderEvaluator implements RecommenderEvaluator {
 	  return randomNums;
   }
   
+  /*
   private void splitOneUsersPrefs(double trainingPercentage,
 		  						  int currentFold,
                                   FastByIDMap<PreferenceArray> trainingPrefs,
@@ -296,18 +295,6 @@ public class KFoldCrossRecommenderEvaluator implements RecommenderEvaluator {
           }
           oneUserTrainingPrefs.add(newPref);
       }
-      /*if (random.nextDouble() < trainingPercentage) {
-        if (oneUserTrainingPrefs == null) {
-          oneUserTrainingPrefs = Lists.newArrayListWithCapacity(3);
-        }
-        oneUserTrainingPrefs.add(newPref);
-      } else {
-        if (oneUserTestPrefs == null) {
-          oneUserTestPrefs = Lists.newArrayListWithCapacity(3);
-        }
-        oneUserTestPrefs.add(newPref);
-      }*/
-      
     }
     if (oneUserTrainingPrefs != null) {
       trainingPrefs.put(userID, new GenericUserPreferenceArray(oneUserTrainingPrefs));
@@ -315,7 +302,7 @@ public class KFoldCrossRecommenderEvaluator implements RecommenderEvaluator {
         testPrefs.put(userID, new GenericUserPreferenceArray(oneUserTestPrefs));
       }
     }
-  }
+  }*/
 
   private float capEstimatedPreference(float estimate) {
     if (estimate > maxPreference) {
