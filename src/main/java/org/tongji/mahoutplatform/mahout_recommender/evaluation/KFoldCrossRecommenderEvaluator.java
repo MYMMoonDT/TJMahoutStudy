@@ -1,5 +1,7 @@
 package org.tongji.mahoutplatform.mahout_recommender.evaluation;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -32,6 +34,7 @@ import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.common.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.tongji.mahoutplatform.mahout_recommender.data.ImproveFileDataModel;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -120,10 +123,114 @@ public class KFoldCrossRecommenderEvaluator implements RecommenderEvaluator {
 
     log.info("Beginning evaluation using {} of {}", trainingPercentage, dataModel);
     
-    double result = 0;
     
-    for(int i = 1; i <= kFold; i++){
-	    /*int numUsers = dataModel.getNumUsers();
+    int numPrefs = ((ImproveFileDataModel)dataModel).getNumPrefs();
+    int eachFoldNumPrefs = numPrefs / kFold;
+    ArrayList<Preference> allPrefs = (ArrayList<Preference>)((ImproveFileDataModel)dataModel).getAllPrefs();
+    
+    int numUsers = dataModel.getNumUsers();
+    List<FastByIDMap<PreferenceArray>> allTrainingPrefs = new ArrayList<FastByIDMap<PreferenceArray>>();
+    for(int i = 0; i < kFold; i++){
+    	allTrainingPrefs.add(new FastByIDMap<PreferenceArray>(1 + (int) (evaluationPercentage * numUsers)));
+    }
+	FastByIDMap<PreferenceArray> testPrefs = null;
+	
+	int randomNums[] = generateRandomNums(numPrefs);
+	for(int i = 0; i < kFold; i++){
+		for(int j = i * eachFoldNumPrefs; j < ((i + 1) * eachFoldNumPrefs); j++){
+			Preference pref = allPrefs.get(randomNums[j]);
+			long userID = pref.getUserID();
+			long itemID = pref.getItemID();
+			if(allTrainingPrefs.get(i).containsKey(userID)){
+				PreferenceArray prefArray = allTrainingPrefs.get(i).get(userID);
+				PreferenceArray newPrefArray = new GenericUserPreferenceArray(prefArray.length() + 1);
+				for(int k = 0; k < prefArray.length(); k++){
+					newPrefArray.setItemID(k, prefArray.getItemID(k));
+					newPrefArray.setValue(k, prefArray.getValue(k));
+				}
+				newPrefArray.setUserID(0, userID);
+				newPrefArray.setItemID(prefArray.length(), itemID);
+				newPrefArray.setValue(prefArray.length(), pref.getValue());
+				allTrainingPrefs.get(i).remove(userID);
+				allTrainingPrefs.get(i).put(userID, newPrefArray);
+			}else{
+				PreferenceArray prefArray = new GenericUserPreferenceArray(1);
+				prefArray.setUserID(0, userID);
+				prefArray.setItemID(0, itemID);
+				prefArray.setValue(0, pref.getValue());
+				allTrainingPrefs.get(i).put(userID, prefArray);
+			}
+		}
+	}
+	
+	for(int i = (kFold - 1) * eachFoldNumPrefs; i < numPrefs; i++){
+		Preference pref = allPrefs.get(randomNums[i]);
+		long userID = pref.getUserID();
+		long itemID = pref.getItemID();
+		FastByIDMap<PreferenceArray> trainingPrefs = allTrainingPrefs.get(kFold - 1);
+		if(trainingPrefs.containsKey(userID)){
+			PreferenceArray prefArray = trainingPrefs.get(userID);
+			PreferenceArray newPrefArray = new GenericUserPreferenceArray(prefArray.length() + 1);
+			for(int k = 0; k < prefArray.length(); k++){
+				newPrefArray.setItemID(k, prefArray.getItemID(k));
+				newPrefArray.setValue(k, prefArray.getValue(k));
+			}
+			newPrefArray.setUserID(0, userID);
+			newPrefArray.setItemID(prefArray.length(), itemID);
+			newPrefArray.setValue(prefArray.length(), pref.getValue());
+			trainingPrefs.remove(userID);
+			trainingPrefs.put(userID, newPrefArray);
+		}else{
+			PreferenceArray prefArray = new GenericUserPreferenceArray(1);
+			prefArray.setUserID(0, userID);
+			prefArray.setItemID(0, itemID);
+			prefArray.setValue(0, pref.getValue());
+			trainingPrefs.put(userID, prefArray);
+		}
+	}
+	
+	double result = 0;
+	for(int i = 0; i < kFold; i++){
+		testPrefs = allTrainingPrefs.get(i);
+		FastByIDMap<PreferenceArray> trainingPrefs = new FastByIDMap<PreferenceArray>(
+		        1 + (int) (evaluationPercentage * numUsers));
+		for(int j = 0; j < kFold; j++){
+			if(j != i){
+				FastByIDMap<PreferenceArray> trainingPrefsPart = allTrainingPrefs.get(j);
+				for(Map.Entry<Long, PreferenceArray> entry : trainingPrefsPart.entrySet()){
+					Long userID = entry.getKey();
+					PreferenceArray prefArray = entry.getValue();
+					if(trainingPrefs.containsKey(userID)){
+						PreferenceArray originalPrefArray = trainingPrefs.get(userID);
+						PreferenceArray newPrefArray = new GenericUserPreferenceArray(originalPrefArray.length() + prefArray.length());
+						newPrefArray.setUserID(0, userID);
+						for(int k = 0; k < originalPrefArray.length(); k++){
+							newPrefArray.setItemID(k, originalPrefArray.getItemID(k));
+							newPrefArray.setValue(k, originalPrefArray.getValue(k));
+						}
+						for(int k = originalPrefArray.length(); k < (prefArray.length() + originalPrefArray.length()); k++){
+							newPrefArray.setItemID(k, prefArray.getItemID(k - originalPrefArray.length()));
+							newPrefArray.setValue(k, prefArray.getValue(k - originalPrefArray.length()));
+						}
+						trainingPrefs.remove(userID);
+						trainingPrefs.put(userID, newPrefArray);
+					}else{
+					   trainingPrefs.put(userID, prefArray);
+					}
+				}
+			}
+		}
+		DataModel trainingModel = dataModelBuilder == null ? new GenericDataModel(trainingPrefs)
+        	: dataModelBuilder.buildDataModel(trainingPrefs);
+    
+		Recommender recommender = recommenderBuilder.buildRecommender(trainingModel);
+    
+    	result += getEvaluation(testPrefs, recommender);
+    	log.info("Evaluation result: {}", result);
+	}
+	
+    /*for(int i = 1; i <= kFold; i++){
+	    int numUsers = dataModel.getNumUsers();
 	    FastByIDMap<PreferenceArray> trainingPrefs = new FastByIDMap<PreferenceArray>(
 	        1 + (int) (evaluationPercentage * numUsers));
 	    FastByIDMap<PreferenceArray> testPrefs = new FastByIDMap<PreferenceArray>(
@@ -143,11 +250,24 @@ public class KFoldCrossRecommenderEvaluator implements RecommenderEvaluator {
 	    Recommender recommender = recommenderBuilder.buildRecommender(trainingModel);
 	    
 	    result += getEvaluation(testPrefs, recommender);
-	    log.info("Evaluation result: {}", result);*/
-    	
-    	
-    }
+	    log.info("Evaluation result: {}", result);
+    }*/
+	
     return result / kFold;
+  }
+  
+  private int[] generateRandomNums(int num){
+	  Object[] randomNumsTemp = null;
+	  HashSet<Integer> hashSet = new HashSet<Integer>();
+	  while(hashSet.size() < num){
+          hashSet.add(random.nextInt(num));
+      }
+	  randomNumsTemp = hashSet.toArray();
+	  int randomNums[] = new int[num];
+	  for(int i = 0; i < num; i++){
+		  randomNums[i] = Integer.parseInt(String.valueOf(randomNumsTemp[i]));
+	  }
+	  return randomNums;
   }
   
   private void splitOneUsersPrefs(double trainingPercentage,

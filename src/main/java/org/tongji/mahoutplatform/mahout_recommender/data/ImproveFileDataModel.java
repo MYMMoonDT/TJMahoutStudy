@@ -135,6 +135,7 @@ public class ImproveFileDataModel extends AbstractDataModel {
   private final boolean transpose;
   private final long minReloadIntervalMS;
 
+  private Collection<Preference> allPrefs;
   /**
    * @param dataFile
    *          file containing preferences data. If file is compressed (and name ends in .gz or .zip
@@ -505,6 +506,9 @@ public class ImproveFileDataModel extends AbstractDataModel {
             ((FastByIDMap<Collection<Preference>>) data).put(userID, prefs);
           }
           prefs.add(new GenericPreference(userID, itemID, preferenceValue));
+          if(allPrefs == null)
+        	  allPrefs = Lists.newArrayListWithCapacity(2);
+          allPrefs.add(new GenericPreference(userID, itemID, preferenceValue));
         }
 
         addTimestamp(userID, itemID, timestampString, timestamps);
@@ -664,6 +668,14 @@ public class ImproveFileDataModel extends AbstractDataModel {
 
   public int getNumUsers() throws TasteException {
     return delegate.getNumUsers();
+  }
+  
+  public int getNumPrefs(){
+	  return allPrefs.size();
+  }
+  
+  public Collection<Preference> getAllPrefs(){
+	  return allPrefs;
   }
 
   public int getNumUsersWithPreferenceFor(long itemID) throws TasteException {
