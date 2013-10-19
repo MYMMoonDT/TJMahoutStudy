@@ -1,6 +1,6 @@
 package org.tongji.mahoutplatform.recommender.data;
 
-public enum Genre {
+public enum GenreType {
 	UNKNOWN,
 	ACTION,
 	ADVENTURE,
@@ -19,9 +19,5 @@ public enum Genre {
 	SCI_FI,
 	THRILLER,
 	WAR,
-	WESTERN;
-	private final static int GENRE_NUM = 19;
-	public static int getGenreNum(){
-		return GENRE_NUM;
-	}
+	WESTERN
 }

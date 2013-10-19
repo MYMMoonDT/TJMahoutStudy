@@ -115,9 +115,9 @@ import com.google.common.collect.Lists;
  * application-specific needs and input formats. See {@link #processLine(String, FastByIDMap, FastByIDMap, boolean)} and
  * {@link #processLineWithoutID(String, FastByIDMap, FastByIDMap)}
  */
-public class GenreDataModel extends AbstractDataModel {
+public class GenreFileDataModel extends AbstractDataModel {
 
-private static final Logger log = LoggerFactory.getLogger(GenreDataModel.class);
+private static final Logger log = LoggerFactory.getLogger(GenreFileDataModel.class);
 
   public static final long DEFAULT_MIN_RELOAD_INTERVAL_MS = 60 * 1000L; // 1 minute?
   private static final char COMMENT_CHAR = '#';
@@ -143,7 +143,7 @@ private static final Logger log = LoggerFactory.getLogger(GenreDataModel.class);
    * @throws IOException
    *           if file can't be read
    */
-  public GenreDataModel(File dataFile) throws IOException {
+  public GenreFileDataModel(File dataFile) throws IOException {
     this(dataFile, false, DEFAULT_MIN_RELOAD_INTERVAL_MS);
   }
 
@@ -155,7 +155,7 @@ private static final Logger log = LoggerFactory.getLogger(GenreDataModel.class);
    *  when refresh() is called
    * @see #FileDataModel(File)
    */
-  public GenreDataModel(File dataFile, boolean transpose, long minReloadIntervalMS) throws IOException {
+  public GenreFileDataModel(File dataFile, boolean transpose, long minReloadIntervalMS) throws IOException {
     this.dataFile = Preconditions.checkNotNull(dataFile.getAbsoluteFile());
     if (!dataFile.exists() || dataFile.isDirectory()) {
       throw new FileNotFoundException(dataFile.toString());
@@ -168,24 +168,6 @@ private static final Logger log = LoggerFactory.getLogger(GenreDataModel.class);
     this.lastModified = dataFile.lastModified();
     this.lastUpdateFileModified = readLastUpdateFileModified();
 
-    /*
-     * FileLineIterator iterator = new FileLineIterator(dataFile, false);
-    String firstLine = iterator.peek();
-    while (firstLine.isEmpty() || firstLine.charAt(0) == COMMENT_CHAR) {
-      iterator.next();
-      firstLine = iterator.peek();
-    }
-    Closeables.close(iterator, true);
-
-    delimiter = determineDelimiter(firstLine);
-    delimiterPattern = Splitter.on(delimiter);
-    List<String> firstLineSplit = Lists.newArrayList();
-    for (String token : delimiterPattern.split(firstLine)) {
-      firstLineSplit.add(token);
-    }
-    // If preference value exists and isn't empty then the file is specifying pref values
-    hasPrefValues = firstLineSplit.size() >= 3 && !firstLineSplit.get(2).isEmpty();
-    */
     delimiter = '|';
     delimiterPattern = Splitter.on(delimiter);
     hasPrefValues = false;
@@ -550,7 +532,7 @@ private static final Logger log = LoggerFactory.getLogger(GenreDataModel.class);
     tokens.next();
     String itemUrlString = tokens.next();
     long itemID = readItemIDFromString(itemIDString);
-    for(int i = 0; i < Genre.getGenreNum(); i++){
+    for(int i = 0; i < GenreType.values().length; i++){
     	String itemGenre = tokens.next();
     	if(itemGenre.equals("1")){
     		FastIDSet genreIDs = data.get(itemID);
@@ -562,46 +544,6 @@ private static final Logger log = LoggerFactory.getLogger(GenreDataModel.class);
     	}
     }
     
-    
-    /*Iterator<String> tokens = delimiterPattern.split(line).iterator();
-    String userIDString = tokens.next();
-    String itemIDString = tokens.next();
-    boolean hasPreference = tokens.hasNext();
-    String preferenceValueString = hasPreference ? tokens.next() : "";
-    boolean hasTimestamp = tokens.hasNext();
-    String timestampString = hasTimestamp ? tokens.next() : null;
-
-    long userID = readUserIDFromString(userIDString);
-    long itemID = readItemIDFromString(itemIDString);
-
-    if (transpose) {
-      long tmp = userID;
-      userID = itemID;
-      itemID = tmp;
-    }
-
-    if (hasPreference && !hasTimestamp && preferenceValueString.isEmpty()) {
-      // Then line is of form "userID,itemID,", meaning remove
-
-      FastIDSet itemIDs = data.get(userID);
-      if (itemIDs != null) {
-        itemIDs.remove(itemID);
-      }
-
-      removeTimestamp(userID, itemID, timestamps);
-
-    } else {
-
-      FastIDSet itemIDs = data.get(userID);
-      if (itemIDs == null) {
-        itemIDs = new FastIDSet(2);
-        data.put(userID, itemIDs);
-      }
-      itemIDs.add(itemID);
-
-      addTimestamp(userID, itemID, timestampString, timestamps);
-
-    }*/
   }
 
   private void addTimestamp(long userID,

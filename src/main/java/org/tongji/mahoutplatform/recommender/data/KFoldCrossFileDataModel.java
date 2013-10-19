@@ -35,6 +35,7 @@ import org.apache.mahout.cf.taste.impl.common.FastIDSet;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.impl.model.AbstractDataModel;
 import org.apache.mahout.cf.taste.impl.model.GenericBooleanPrefDataModel;
+import org.apache.mahout.cf.taste.impl.model.GenericDataModel;
 import org.apache.mahout.cf.taste.impl.model.GenericPreference;
 import org.apache.mahout.cf.taste.impl.model.GenericUserPreferenceArray;
 import org.apache.mahout.cf.taste.model.DataModel;
@@ -116,9 +117,11 @@ import com.google.common.io.Closeables;
  * application-specific needs and input formats. See {@link #processLine(String, FastByIDMap, FastByIDMap, boolean)} and
  * {@link #processLineWithoutID(String, FastByIDMap, FastByIDMap)}
  */
-public class ImproveFileDataModel extends AbstractDataModel {
+public class KFoldCrossFileDataModel extends AbstractDataModel {
 
-  private static final Logger log = LoggerFactory.getLogger(ImproveFileDataModel.class);
+  private static final long serialVersionUID = 6336243954810468052L;
+
+  private static final Logger log = LoggerFactory.getLogger(KFoldCrossFileDataModel.class);
 
   public static final long DEFAULT_MIN_RELOAD_INTERVAL_MS = 60 * 1000L; // 1 minute?
   private static final char COMMENT_CHAR = '#';
@@ -145,7 +148,7 @@ public class ImproveFileDataModel extends AbstractDataModel {
    * @throws IOException
    *           if file can't be read
    */
-  public ImproveFileDataModel(File dataFile) throws IOException {
+  public KFoldCrossFileDataModel(File dataFile) throws IOException {
     this(dataFile, false, DEFAULT_MIN_RELOAD_INTERVAL_MS);
   }
 
@@ -157,7 +160,7 @@ public class ImproveFileDataModel extends AbstractDataModel {
    *  when refresh() is called
    * @see #FileDataModel(File)
    */
-  public ImproveFileDataModel(File dataFile, boolean transpose, long minReloadIntervalMS) throws IOException {
+  public KFoldCrossFileDataModel(File dataFile, boolean transpose, long minReloadIntervalMS) throws IOException {
     this.dataFile = Preconditions.checkNotNull(dataFile.getAbsoluteFile());
     if (!dataFile.exists() || dataFile.isDirectory()) {
       throw new FileNotFoundException(dataFile.toString());
@@ -239,17 +242,17 @@ public class ImproveFileDataModel extends AbstractDataModel {
           processFile(new FileLineIterator(updateFile, false), data, timestamps, false);
         }
 
-        return new ImproveGenericDataModel(ImproveGenericDataModel.toDataMap(data, true), timestamps);
+        return new GenericDataModel(GenericDataModel.toDataMap(data, true), timestamps);
 
       } else {
 
-        FastByIDMap<PreferenceArray> rawData = ((ImproveGenericDataModel) delegate).getRawUserData();
+        FastByIDMap<PreferenceArray> rawData = ((GenericDataModel) delegate).getRawUserData();
 
         for (File updateFile : findUpdateFilesAfter(Math.max(oldLastUpdateFileModifieid, newLastModified))) {
           processFile(new FileLineIterator(updateFile, false), rawData, timestamps, true);
         }
 
-        return new ImproveGenericDataModel(rawData, timestamps);
+        return new 	GenericDataModel(rawData, timestamps);
 
       }
 
