@@ -1,4 +1,4 @@
-package org.tongji.mahoutplatform.mahout_recommender.sample;
+package org.tongji.mahoutplatform.recommender.sample;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
-import org.tongji.mahoutplatform.mahout_recommender.recommender.ImproveItemBasedRecommender;
+import org.tongji.mahoutplatform.recommender.recommender.ImproveItemBasedRecommender;
 
 public class ImproveRMSItemBasedRecommendEvaluatorSample {
 	public static void main(String[] args) throws IOException, TasteException{

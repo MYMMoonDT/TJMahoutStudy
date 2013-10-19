@@ -1,4 +1,4 @@
-package org.tongji.mahoutplatform.mahout_recommender.similarity;
+package org.tongji.mahoutplatform.recommender.similarity;
 
 import java.util.Collection;
 import java.util.concurrent.Callable;
@@ -16,7 +16,7 @@ import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.apache.mahout.cf.taste.transforms.PreferenceTransform;
 import org.apache.mahout.cf.taste.transforms.SimilarityTransform;
-import org.tongji.mahoutplatform.mahout_recommender.data.Genre;
+import org.tongji.mahoutplatform.recommender.data.Genre;
 
 import com.google.common.base.Preconditions;
 

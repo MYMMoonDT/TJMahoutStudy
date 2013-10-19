@@ -1,5 +1,5 @@
 
-package org.tongji.mahoutplatform.mahout_recommender.evaluation;
+package org.tongji.mahoutplatform.recommender.evaluation;
 
 import org.apache.mahout.cf.taste.impl.common.RunningAverageAndStdDev;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package org.tongji.mahoutplatform.mahout_recommender.sample;
+package org.tongji.mahoutplatform.recommender.sample;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,11 +8,11 @@ import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
-import org.tongji.mahoutplatform.mahout_recommender.data.GenreDataModel;
-import org.tongji.mahoutplatform.mahout_recommender.data.ImproveFileDataModel;
-import org.tongji.mahoutplatform.mahout_recommender.evaluation.KFoldCrossRecommenderEvaluator;
-import org.tongji.mahoutplatform.mahout_recommender.recommender.ImproveItemBasedRecommender;
-import org.tongji.mahoutplatform.mahout_recommender.similarity.GenreItemSimilarity;
+import org.tongji.mahoutplatform.recommender.data.GenreDataModel;
+import org.tongji.mahoutplatform.recommender.data.ImproveFileDataModel;
+import org.tongji.mahoutplatform.recommender.evaluation.KFoldCrossRecommenderEvaluator;
+import org.tongji.mahoutplatform.recommender.recommender.ImproveItemBasedRecommender;
+import org.tongji.mahoutplatform.recommender.similarity.GenreItemSimilarity;
 
 public class GenreDataModelSample {
 

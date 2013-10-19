@@ -1,4 +1,4 @@
-package org.tongji.mahoutplatform.mahout_recommender.data;
+package org.tongji.mahoutplatform.recommender.data;
 
 public enum Genre {
 	UNKNOWN,

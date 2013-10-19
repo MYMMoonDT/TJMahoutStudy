@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.tongji.mahoutplatform.mahout_recommender.data;
+package org.tongji.mahoutplatform.recommender.data;
 
 import java.io.File;
 import java.io.FileFilter;

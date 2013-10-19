@@ -1,4 +1,4 @@
-package org.tongji.mahoutplatform.mahout_recommender.evaluation;
+package org.tongji.mahoutplatform.recommender.evaluation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -32,7 +32,7 @@ import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.common.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.tongji.mahoutplatform.mahout_recommender.data.ImproveFileDataModel;
+import org.tongji.mahoutplatform.recommender.data.ImproveFileDataModel;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;

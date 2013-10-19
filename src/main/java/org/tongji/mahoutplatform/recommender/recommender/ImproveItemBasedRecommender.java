@@ -1,4 +1,4 @@
-package org.tongji.mahoutplatform.mahout_recommender.recommender;
+package org.tongji.mahoutplatform.recommender.recommender;
 
 import java.util.concurrent.Callable;
 
