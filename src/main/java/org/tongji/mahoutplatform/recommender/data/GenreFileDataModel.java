@@ -539,7 +539,7 @@ private static final Logger log = LoggerFactory.getLogger(GenreFileDataModel.cla
     		if (genreIDs == null) {
     			genreIDs = new FastIDSet(2);
     			data.put(itemID, genreIDs);
-    	    }
+    	  }
     		genreIDs.add(i);
     	}
     }

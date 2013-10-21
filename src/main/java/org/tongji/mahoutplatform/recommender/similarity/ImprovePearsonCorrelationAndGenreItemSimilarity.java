@@ -9,7 +9,7 @@ import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
 
-public class CompositeSimilarity implements ItemSimilarity{
+public class ImprovePearsonCorrelationAndGenreItemSimilarity implements ItemSimilarity{
 
     private DataModel dataModel;
     private DataModel genreDataModel;
@@ -19,28 +19,28 @@ public class CompositeSimilarity implements ItemSimilarity{
     private ItemSimilarity improvePearsonCorrelationSimilarity;
     private ItemSimilarity genreItemSimilarity;
     
-    public CompositeSimilarity(DataModel dataModel, DataModel genreDataModel) throws TasteException{
+    public ImprovePearsonCorrelationAndGenreItemSimilarity(DataModel dataModel, DataModel genreDataModel) throws TasteException{
         this.dataModel = dataModel;
         this.genreDataModel = genreDataModel;
         this.improvePearsonCorrelationSimilarity = new ImprovePearsonCorrelationSimilarity(this.dataModel);
         this.genreItemSimilarity = new GenreItemSimilarity(this.genreDataModel);
     }
     
-    public CompositeSimilarity(DataModel dataModel, DataModel genreDataModel, int itemEta) throws TasteException{
+    public ImprovePearsonCorrelationAndGenreItemSimilarity(DataModel dataModel, DataModel genreDataModel, int itemEta) throws TasteException{
         this.dataModel = dataModel;
         this.genreDataModel = genreDataModel;
         this.improvePearsonCorrelationSimilarity = new ImprovePearsonCorrelationSimilarity(this.dataModel, itemEta);
         this.genreItemSimilarity = new GenreItemSimilarity(this.genreDataModel);
     }
     
-    public CompositeSimilarity(DataModel dataModel, 
+    public ImprovePearsonCorrelationAndGenreItemSimilarity(DataModel dataModel, 
             DataModel genreDataModel,
             double Lambda) throws TasteException{
         this(dataModel, genreDataModel);
         this.Lambda = Lambda;
     }
     
-    public CompositeSimilarity(DataModel dataModel, 
+    public ImprovePearsonCorrelationAndGenreItemSimilarity(DataModel dataModel, 
             DataModel genreDataModel,
             double Lambda,
             int itemEta) throws TasteException{
