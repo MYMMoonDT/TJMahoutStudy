@@ -12,10 +12,14 @@ import org.apache.mahout.cf.taste.impl.model.GenericUserPreferenceArray;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tongji.mahoutplatform.recommender.data.PopularFileDataModel;
 
 public class PopularItemSimilarity implements ItemSimilarity{
 
+	private static final Logger log = LoggerFactory.getLogger(PopularItemSimilarity.class);
+	
     private DataModel popularDataModel;
     
     public PopularItemSimilarity(DataModel popularFileDataModel){

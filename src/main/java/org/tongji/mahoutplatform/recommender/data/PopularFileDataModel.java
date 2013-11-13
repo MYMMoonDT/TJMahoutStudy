@@ -14,8 +14,12 @@ import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.impl.model.AbstractDataModel;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PopularFileDataModel extends AbstractDataModel{
+	
+	private static final Logger log = LoggerFactory.getLogger(PopularFileDataModel.class);
 
     private FastByIDMap<FastByIDMap<Float>> popularForItems;
     

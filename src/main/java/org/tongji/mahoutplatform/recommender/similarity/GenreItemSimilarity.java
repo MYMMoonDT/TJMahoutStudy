@@ -9,10 +9,14 @@ import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.PreferenceArray;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tongji.mahoutplatform.recommender.data.GenreType;
 
 public class GenreItemSimilarity implements ItemSimilarity{
 
+	private static final Logger log = LoggerFactory.getLogger(GenreItemSimilarity.class);
+	
     private DataModel genreDataModel;
     private final int GenreNum = GenreType.values().length;
     

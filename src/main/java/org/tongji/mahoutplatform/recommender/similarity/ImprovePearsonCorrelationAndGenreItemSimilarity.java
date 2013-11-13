@@ -8,9 +8,13 @@ import org.apache.mahout.cf.taste.impl.common.FastIDSet;
 import org.apache.mahout.cf.taste.impl.common.LongPrimitiveIterator;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ImprovePearsonCorrelationAndGenreItemSimilarity implements ItemSimilarity{
 
+	private static final Logger log = LoggerFactory.getLogger(ImprovePearsonCorrelationAndGenreItemSimilarity.class);
+	
     private DataModel dataModel;
     private DataModel genreDataModel;
     

@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.eval.RecommenderBuilder;
+import org.apache.mahout.cf.taste.impl.recommender.GenericItemBasedRecommender;
+import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
 import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.recommender.Recommender;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
@@ -15,6 +17,7 @@ import org.tongji.mahoutplatform.recommender.evaluation.KFoldCrossRecommenderAAD
 import org.tongji.mahoutplatform.recommender.evaluation.KFoldCrossRecommenderRMSEvaluator;
 import org.tongji.mahoutplatform.recommender.recommender.ImproveItemBasedRecommender;
 import org.tongji.mahoutplatform.recommender.similarity.ImprovePearsonCorrelationAndGenreItemAndPopularItemSimilarity;
+import org.tongji.mahoutplatform.recommender.similarity.ImprovePearsonCorrelationAndGenreItemSimilarity;
 
 public class KFoldCrossRecommenderEvaluatorExample {
     public static void main(String[] args) throws IOException, TasteException{
@@ -49,8 +52,14 @@ public class KFoldCrossRecommenderEvaluatorExample {
          * 
          */
         
-        /*DataModel model = new KFoldCrossFileDataModel(new File("data/ratings.dat"));
+    	normalItemBasedRecommenderWithKFoldCrossEvaluator();
+    	improveItemBasedRecommenderAddGenreFeatureWithKFoldCrossEvaluator();
+    	improveItemBasedRecommenderAddGenreFeatureAddPopularKFoldCrossEvaluator();
+    }
     
+    public static void normalItemBasedRecommenderWithKFoldCrossEvaluator() throws IOException, TasteException{
+    	DataModel model = new KFoldCrossFileDataModel(new File("data/ratings.dat"));
+        
         KFoldCrossRecommenderAADEvaluator aadEvaluator = new KFoldCrossRecommenderAADEvaluator();
         KFoldCrossRecommenderRMSEvaluator rmsEvaluator = new KFoldCrossRecommenderRMSEvaluator();
         
@@ -61,31 +70,16 @@ public class KFoldCrossRecommenderEvaluatorExample {
           }
         };
         
-        double addScore = aadEvaluator.evaluate(builder, null, model, 10);
-        System.out.println(addScore);
-        
-        double rmsScore = rmsEvaluator.evaluate(builder, null, model, 10);
-        System.out.println(rmsScore);*/
-        
-        /*DataModel model = new KFoldCrossFileDataModel(new File("data/ratings.dat"));
-        
-        KFoldCrossRecommenderAADEvaluator aadEvaluator = new KFoldCrossRecommenderAADEvaluator();
-        KFoldCrossRecommenderRMSEvaluator rmsEvaluator = new KFoldCrossRecommenderRMSEvaluator();
-        
-        RecommenderBuilder builder = new RecommenderBuilder(){
-          public Recommender buildRecommender(DataModel model) throws TasteException {
-            ItemSimilarity similarity = new PearsonCorrelationSimilarity(model);
-            return new ImproveItemBasedRecommender(model, similarity, 0.1);
-          }
-        };
         
         double addScore = aadEvaluator.evaluate(builder, null, model, 10);
         System.out.println(addScore);
         
         double rmsScore = rmsEvaluator.evaluate(builder, null, model, 10);
-        System.out.println(rmsScore);*/
-        
-        /*DataModel model = new KFoldCrossFileDataModel(new File("data/ratings.dat"));
+        System.out.println(rmsScore);
+    }
+    
+    public static void improveItemBasedRecommenderAddGenreFeatureWithKFoldCrossEvaluator() throws IOException, TasteException{
+    	DataModel model = new KFoldCrossFileDataModel(new File("data/ratings.dat"));
         final DataModel genreModel = new GenreFileDataModel(new File("data/movies.dat"));
     
         KFoldCrossRecommenderAADEvaluator aadEvaluator = new KFoldCrossRecommenderAADEvaluator();
@@ -102,9 +96,11 @@ public class KFoldCrossRecommenderEvaluatorExample {
         System.out.println(addScore);
         
         double rmsScore = rmsEvaluator.evaluate(builder, null, model, 10);
-        System.out.println(rmsScore);*/
-        
-        DataModel model = new KFoldCrossFileDataModel(new File("data/ratings.dat"));
+        System.out.println(rmsScore);
+    }
+    
+    public static void improveItemBasedRecommenderAddGenreFeatureAddPopularKFoldCrossEvaluator() throws IOException, TasteException{
+    	DataModel model = new KFoldCrossFileDataModel(new File("data/ratings.dat"));
         final DataModel genreModel = new GenreFileDataModel(new File("data/movies.dat"));
         final DataModel popularModel = new PopularFileDataModel(model);
     

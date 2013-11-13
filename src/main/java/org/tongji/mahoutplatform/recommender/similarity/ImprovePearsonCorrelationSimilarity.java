@@ -3,11 +3,15 @@ package org.tongji.mahoutplatform.recommender.similarity;
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.common.Weighting;
 import org.apache.mahout.cf.taste.model.DataModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
 
 public class ImprovePearsonCorrelationSimilarity extends AbstractSimilarity{
     
+	private static final Logger log = LoggerFactory.getLogger(ImprovePearsonCorrelationSimilarity.class);
+	
     private int itemEta = 0;
     
     /**

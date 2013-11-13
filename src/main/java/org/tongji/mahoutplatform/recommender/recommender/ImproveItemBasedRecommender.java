@@ -63,7 +63,7 @@ public class ImproveItemBasedRecommender extends GenericItemBasedRecommender{
             if(!Double.isNaN(itemSimilarityThreshold)){
               if(theSimilarity > itemSimilarityThreshold){
                 preference += theSimilarity * (preferencesFromUser.getValue(i) - itemAveragePref);
-                totalSimilarity += theSimilarity;
+                totalSimilarity += Math.abs(theSimilarity);
                 count++;
               }else{
                 continue;

@@ -31,12 +31,17 @@ import org.apache.mahout.cf.taste.similarity.PreferenceInferrer;
 import org.apache.mahout.cf.taste.similarity.UserSimilarity;
 import org.apache.mahout.cf.taste.transforms.PreferenceTransform;
 import org.apache.mahout.cf.taste.transforms.SimilarityTransform;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.tongji.mahoutplatform.recommender.recommender.ImproveItemBasedRecommender;
 
 import com.google.common.base.Preconditions;
 
 /** Abstract superclass encapsulating functionality that is common to most implementations in this package. */
 abstract class AbstractSimilarity extends AbstractItemSimilarity implements UserSimilarity {
 
+  private static final Logger log = LoggerFactory.getLogger(AbstractSimilarity.class);
+	
   private PreferenceInferrer inferrer;
   private PreferenceTransform prefTransform;
   private SimilarityTransform similarityTransform;
