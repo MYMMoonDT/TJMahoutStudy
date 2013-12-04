@@ -132,7 +132,7 @@ public abstract class AbstractKFoldCrossRecommenderEvaluator {
   		}
   	}
   	
-  	for(int i = (kFold - 1) * eachFoldNumPrefs; i < numPrefs; i++){
+  	for(int i = (kFold * eachFoldNumPrefs); i < numPrefs; i++){
 	    Preference pref = allPrefs.get(randomNums[i]);
 	    long userID = pref.getUserID();
 	    long itemID = pref.getItemID();
